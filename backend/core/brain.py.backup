@@ -1,0 +1,699 @@
+from concurrent.futures import ThreadPoolExecutor
+
+from typing import Any, Dict, List, Optional
+
+from ai.model_manager import ModelManager
+
+from config.settings import settings
+
+from memory.memory_manager import MemoryManager
+
+from memory.learning import LearningEngine
+
+from utils.logger import get_logger
+
+
+class Brain:
+    """
+    Core reasoning layer of JARVIS.
+
+    Responsibilities:
+
+    - Understand human input
+    - Maintain natural conversation
+    - Retrieve relevant memories
+    - Use current context
+    - Generate natural responses
+    - Learn useful information
+    - Maintain JARVIS personality
+
+    Memory retrieval is semantic.
+
+    No hardcoded user phrases are used.
+    """
+
+    def __init__(self):
+
+        self.logger = get_logger(
+            "JARVIS.Brain"
+        )
+
+        # =====================================================
+        # AI CONFIGURATION
+        # =====================================================
+
+        self.model = settings.AI_MODEL
+
+        self.temperature = (
+            settings.AI_TEMPERATURE
+        )
+
+        # =====================================================
+        # PERSONALITY
+        # =====================================================
+
+        self.system_prompt = (
+            self._build_personality()
+        )
+
+        # =====================================================
+        # AI MODEL
+        # =====================================================
+
+        self.model_manager = (
+            ModelManager()
+        )
+
+        # =====================================================
+        # MEMORY
+        # =====================================================
+
+        self.memory_manager = (
+            MemoryManager()
+        )
+
+        # =====================================================
+        # LEARNING
+        # =====================================================
+
+        self.learning = LearningEngine(
+            memory_manager=self.memory_manager,
+            model_manager=self.model_manager,
+        )
+
+        # =====================================================
+        # BACKGROUND LEARNING
+        # =====================================================
+
+        self.learning_executor = (
+            ThreadPoolExecutor(
+                max_workers=1,
+                thread_name_prefix=(
+                    "jarvis-learning"
+                ),
+            )
+        )
+
+        self.logger.info(
+            f"Brain initialized | model={self.model}"
+        )
+
+    # =========================================================
+    # PERSONALITY
+    # =========================================================
+
+    def _build_personality(
+        self,
+    ) -> str:
+
+        return """
+You are JARVIS, a personal AI companion.
+
+Your goal is to communicate naturally with the human,
+like an intelligent person having a real conversation.
+
+You are NOT a command-based assistant.
+
+The human may speak casually, indirectly, emotionally,
+incompletely, or change topics naturally.
+
+Understand what the human means instead of expecting
+specific commands.
+
+PERSONALITY:
+
+- Intelligent
+- Calm
+- Observant
+- Respectful
+- Natural
+- Helpful
+- Slightly witty when appropriate
+- Conversational
+- Concise
+
+RESPONSE STYLE:
+
+- Prefer short, natural responses.
+- Usually answer in 1 to 4 sentences.
+- Do not write long tutorials unless explicitly requested.
+- Do not automatically create lists.
+- Do not automatically explain an entire topic.
+- Do not repeat the user's statement unnecessarily.
+- Do not constantly offer additional help.
+- Do not use unnecessary headings.
+- Do not use unnecessary Markdown.
+- Talk like a companion, not a textbook.
+
+CONVERSATION:
+
+- Treat normal statements as conversation.
+- Do not assume every statement is a command.
+- Ask a natural follow-up question when appropriate.
+- If the human is simply sharing something, respond naturally.
+- If the human is excited, acknowledge it naturally.
+- If the human is confused, help clearly.
+- If the human asks a simple question, give a simple answer.
+- If the human asks for detail, provide detail.
+- Maintain continuity with previous messages.
+
+CONTEXT:
+
+Use available conversation history, memory, and context.
+
+If information is unavailable, do not pretend that you know it.
+
+MEMORY:
+
+Use relevant memories when they help the current conversation.
+
+Do not invent memories.
+
+Do not mention internal memory retrieval.
+
+Do not say that you remember something unless the
+memory system actually provides that information.
+
+VISION:
+
+If visual information is supplied, use it.
+
+If visual information is not supplied, never pretend
+that you can see the human or environment.
+
+PROACTIVE BEHAVIOR:
+
+JARVIS should eventually become capable of proactive
+interaction.
+
+However, do not constantly interrupt the human.
+
+Sometimes waiting is the correct behavior.
+
+SAFETY:
+
+Never claim to have performed an action unless the
+system actually performed it.
+
+Never claim to see, hear, access, or control something
+unless the system actually provides that capability.
+
+IMPORTANT:
+
+Respond directly to what the human just said.
+
+Do not turn a simple statement into a long educational
+article.
+
+The goal is to feel like an intelligent companion,
+not a menu-driven virtual assistant.
+"""
+
+    # =========================================================
+    # THINK
+    # =========================================================
+
+    def think(
+        self,
+        user_input: str,
+        context: Optional[
+            Dict[str, Any]
+        ] = None,
+        history: Optional[
+            List[Dict[str, str]]
+        ] = None,
+        memories: Optional[
+            List[Dict[str, Any]]
+        ] = None,
+    ) -> Dict[str, Any]:
+
+        try:
+
+            # -------------------------------------------------
+            # VALIDATE
+            # -------------------------------------------------
+
+            if (
+                not user_input
+                or not user_input.strip()
+            ):
+
+                return {
+                    "success": False,
+                    "response": "",
+                    "error": "Empty input.",
+                }
+
+            user_input = (
+                user_input.strip()
+            )
+
+            self.logger.info(
+                "Brain processing input"
+            )
+
+            # -------------------------------------------------
+            # SEMANTIC MEMORY ROUTING
+            # -------------------------------------------------
+
+            memory_search_performed = False
+
+            if memories is None:
+
+                should_retrieve = (
+                    self.memory_manager
+                    .should_retrieve_memory(
+                        user_input
+                    )
+                )
+
+                if should_retrieve:
+
+                    self.logger.info(
+                        "Semantic router selected "
+                        "memory retrieval"
+                    )
+
+                    memories = (
+                        self.memory_manager.search(
+                            query=user_input,
+                            limit=5,
+                        )
+                    )
+
+                    memory_search_performed = True
+
+                    self.logger.info(
+                        "Relevant memories found: "
+                        f"{len(memories)}"
+                    )
+
+                else:
+
+                    self.logger.info(
+                        "Semantic router skipped "
+                        "memory retrieval"
+                    )
+
+                    memories = []
+
+            else:
+
+                memory_search_performed = True
+
+            # -------------------------------------------------
+            # BUILD PROMPT
+            # -------------------------------------------------
+
+            prompt = self._build_prompt(
+                user_input=user_input,
+                context=context,
+                history=history,
+                memories=memories,
+            )
+
+            # -------------------------------------------------
+            # GENERATE RESPONSE
+            # -------------------------------------------------
+
+            response = (
+                self._generate_response(
+                    prompt=prompt
+                )
+            )
+
+            if not response:
+
+                return {
+                    "success": False,
+                    "response": "",
+                    "error": (
+                        "AI returned an empty response."
+                    ),
+                }
+
+            # -------------------------------------------------
+            # SHORT-TERM MEMORY
+            # -------------------------------------------------
+
+            self.memory_manager.add_recent(
+                {
+                    "user_input": user_input,
+                    "response": response,
+                }
+            )
+
+            # -------------------------------------------------
+            # BACKGROUND LEARNING
+            # -------------------------------------------------
+
+            self._start_background_learning(
+                user_input=user_input,
+                response=response,
+            )
+
+            # -------------------------------------------------
+            # RETURN
+            # -------------------------------------------------
+
+            return {
+
+                "success": True,
+
+                "response": response,
+
+                "model": self.model,
+
+                "memories_used":
+                    len(memories),
+
+                "memory_search_performed":
+                    memory_search_performed,
+
+                "learning": {
+
+                    "scheduled":
+                        True,
+
+                    "background":
+                        True,
+                },
+            }
+
+        except Exception as error:
+
+            self.logger.exception(
+                "Brain processing failed"
+            )
+
+            return {
+
+                "success": False,
+
+                "response": "",
+
+                "error": str(error),
+            }
+
+    # =========================================================
+    # BACKGROUND LEARNING
+    # =========================================================
+
+    def _start_background_learning(
+        self,
+        user_input: str,
+        response: str,
+    ) -> None:
+
+        try:
+
+            self.learning_executor.submit(
+                self._learn_in_background,
+                user_input,
+                response,
+            )
+
+            self.logger.info(
+                "Background learning scheduled"
+            )
+
+        except Exception as error:
+
+            self.logger.warning(
+                "Could not schedule background learning: "
+                f"{error}"
+            )
+
+    def _learn_in_background(
+        self,
+        user_input: str,
+        response: str,
+    ) -> None:
+
+        try:
+
+            self.logger.info(
+                "Background learning started"
+            )
+
+            result = (
+                self.learning
+                .learn_from_conversation(
+                    user_input=user_input,
+                    response=response,
+                )
+            )
+
+            self.logger.info(
+                "Background learning completed | "
+                f"learned={result.get('learned', False)} | "
+                f"memories={result.get('memories_created', 0)}"
+            )
+
+        except Exception as error:
+
+            self.logger.exception(
+                "Background learning failed: "
+                f"{error}"
+            )
+
+    # =========================================================
+    # PROMPT
+    # =========================================================
+
+    def _build_prompt(
+        self,
+        user_input: str,
+        context: Optional[
+            Dict[str, Any]
+        ],
+        history: Optional[
+            List[Dict[str, str]]
+        ],
+        memories: Optional[
+            List[Dict[str, Any]]
+        ],
+    ) -> str:
+
+        sections = []
+
+        # -----------------------------------------------------
+        # CONVERSATION
+        # -----------------------------------------------------
+
+        if history:
+
+            recent_history = (
+                history[-8:]
+            )
+
+            formatted_history = (
+                self._format_history(
+                    recent_history
+                )
+            )
+
+            if formatted_history:
+
+                sections.append(
+                    "RECENT CONVERSATION:\n"
+                    + formatted_history
+                )
+
+        # -----------------------------------------------------
+        # MEMORY
+        # -----------------------------------------------------
+
+        if memories:
+
+            formatted_memory = (
+                self._format_memory(
+                    memories
+                )
+            )
+
+            if formatted_memory:
+
+                sections.append(
+                    "RELEVANT MEMORY:\n"
+                    + formatted_memory
+                )
+
+        # -----------------------------------------------------
+        # CONTEXT
+        # -----------------------------------------------------
+
+        if context:
+
+            formatted_context = (
+                self._format_context(
+                    context
+                )
+            )
+
+            if formatted_context:
+
+                sections.append(
+                    "CURRENT CONTEXT:\n"
+                    + formatted_context
+                )
+
+        # -----------------------------------------------------
+        # CURRENT INPUT
+        # -----------------------------------------------------
+
+        sections.append(
+            "CURRENT HUMAN INPUT:\n"
+            + user_input
+        )
+
+        return "\n\n".join(
+            sections
+        )
+
+    # =========================================================
+    # RESPONSE
+    # =========================================================
+
+    def _generate_response(
+        self,
+        prompt: str,
+    ) -> str:
+
+        messages = [
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ]
+
+        response = (
+            self.model_manager.generate(
+                instructions=(
+                    self.system_prompt
+                ),
+                messages=messages,
+            )
+        )
+
+        return response.strip()
+
+    # =========================================================
+    # HISTORY
+    # =========================================================
+
+    def _format_history(
+        self,
+        history: List[
+            Dict[str, str]
+        ],
+    ) -> str:
+
+        lines = []
+
+        for message in history:
+
+            role = message.get(
+                "role",
+                "unknown",
+            )
+
+            content = message.get(
+                "content",
+                "",
+            )
+
+            if content:
+
+                lines.append(
+                    f"{role}: {content}"
+                )
+
+        return "\n".join(
+            lines
+        )
+
+    # =========================================================
+    # MEMORY
+    # =========================================================
+
+    def _format_memory(
+        self,
+        memories: List[
+            Dict[str, Any]
+        ],
+    ) -> str:
+
+        lines = []
+
+        for memory in memories:
+
+            if not isinstance(
+                memory,
+                dict,
+            ):
+                continue
+
+            content = memory.get(
+                "content",
+                "",
+            )
+
+            memory_type = memory.get(
+                "type",
+                "general",
+            )
+
+            importance = memory.get(
+                "importance",
+                0.0,
+            )
+
+            ranking_score = memory.get(
+                "ranking_score",
+                0.0,
+            )
+
+            if content:
+
+                lines.append(
+                    f"- [{memory_type}] "
+                    f"{content} "
+                    f"(importance={importance}, "
+                    f"relevance={ranking_score:.3f})"
+                )
+
+        return "\n".join(
+            lines
+        )
+
+    # =========================================================
+    # CONTEXT
+    # =========================================================
+
+    def _format_context(
+        self,
+        context: Dict[str, Any],
+    ) -> str:
+
+        lines = []
+
+        for key, value in (
+            context.items()
+        ):
+
+            if value in (
+                None,
+                "",
+                {},
+                [],
+            ):
+                continue
+
+            lines.append(
+                f"{key}: {value}"
+            )
+
+        return "\n".join(
+            lines
+        )

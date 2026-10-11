@@ -1,0 +1,317 @@
+[
+    {
+        "content": "JARVIS project is being developed.",
+        "type": "project",
+        "importance": 0.9,
+        "metadata": {},
+        "created_at": "2026-10-07T15:14:09.868421+00:00",
+        "vector_id": 0,
+        "access_count": 75,
+        "last_accessed_at": "2026-10-11T10:34:56.011953+00:00",
+        "memory_id": "mem_4a40c30a5b544534b812a0f412328845",
+        "updated_at": "2026-10-08T12:39:10.677248+00:00",
+        "confidence": 0.8,
+        "superseded_by": null,
+        "archived_at": null,
+        "lifecycle_updated_at": "2026-10-08T12:39:10.677248+00:00",
+        "status": "active",
+        "lifecycle_reason": "Lifecycle test completed"
+    },
+    {
+        "content": "Vinayak is building a JARVIS AI companion. Vinayak introduced himself as the creator of a JARVIS-like project.",
+        "type": "project",
+        "importance": 0.9,
+        "metadata": {},
+        "created_at": "2026-10-07T15:17:58.010913+00:00",
+        "vector_id": 1,
+        "access_count": 46,
+        "last_accessed_at": "2026-10-11T10:28:07.278475+00:00",
+        "memory_id": "mem_6b59beec30044cc3a835183466536274",
+        "updated_at": "2026-10-09T13:22:07.278774+00:00",
+        "confidence": 0.8,
+        "superseded_by": null,
+        "archived_at": null,
+        "lifecycle_updated_at": null,
+        "status": "active",
+        "lifecycle_reason": null
+    },
+    {
+        "content": "JARVIS should communicate naturally like a human.",
+        "type": "design",
+        "importance": 0.9,
+        "metadata": {},
+        "created_at": "2026-10-07T15:17:58.011420+00:00",
+        "vector_id": 2,
+        "access_count": 61,
+        "last_accessed_at": "2026-10-11T10:28:07.278475+00:00",
+        "memory_id": "mem_70767132192a4d0f9de3e00d12898f3c",
+        "updated_at": null,
+        "confidence": 0.8,
+        "superseded_by": null,
+        "archived_at": null,
+        "lifecycle_updated_at": null,
+        "status": "active",
+        "lifecycle_reason": null
+    },
+    {
+        "content": "I am building a JARVIS AI project using Python",
+        "type": "project_context",
+        "importance": 0.85,
+        "metadata": {
+            "source": "conversation",
+            "created_at": "2026-10-07T16:44:51.576939+00:00"
+        },
+        "created_at": "2026-10-07T16:44:51.576939+00:00",
+        "vector_id": 3,
+        "access_count": 46,
+        "last_accessed_at": "2026-10-11T10:28:07.278475+00:00",
+        "memory_id": "mem_badb1621b99f45538666f509b5401452",
+        "updated_at": null,
+        "confidence": 0.8,
+        "superseded_by": null,
+        "archived_at": null,
+        "lifecycle_updated_at": null,
+        "status": "active",
+        "lifecycle_reason": null
+    },
+    {
+        "memory_id": "mem_1c9ddd0f497f45a49a0d1f735b456219",
+        "content": "HUMAN repeatedly states they will take care of me, indicating a sense of responsibility or protective instinct.",
+        "type": "relationship",
+        "importance": 0.7,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T13:43:37.965858+00:00"
+        },
+        "created_at": "2026-10-08T13:43:38.012390+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 4
+    },
+    {
+        "memory_id": "mem_07df988d38564e7fb6fbf3757f4f0270",
+        "content": "The human is trying to capture a moment or frame for a record.",
+        "type": "goal",
+        "importance": 0.6,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T13:48:14.564048+00:00"
+        },
+        "created_at": "2026-10-08T13:48:14.578933+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 5
+    },
+    {
+        "memory_id": "mem_79606b2ded8b409ca40336e8b8bf94f3",
+        "content": "Human is preparing to throw something",
+        "type": "routine",
+        "importance": 0.5,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T13:49:56.007122+00:00"
+        },
+        "created_at": "2026-10-08T13:49:56.018974+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 6
+    },
+    {
+        "memory_id": "mem_7a26b6af2c2545ca831ef8b7159479f2",
+        "content": "Human is in a hurry and needs to go to the Finance Department.",
+        "type": "routine",
+        "importance": 0.6,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T13:54:38.408289+00:00"
+        },
+        "created_at": "2026-10-08T13:54:38.421748+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 7
+    },
+    {
+        "memory_id": "mem_3b30cbc1c01a465e891778dd3ba754ef",
+        "content": "Discussing technical details related to CMOS battery, ESP32, and Bluetooth Wi-Fi",
+        "type": "project",
+        "importance": 0.6,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T13:56:24.770219+00:00"
+        },
+        "created_at": "2026-10-08T13:56:24.789027+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 8
+    },
+    {
+        "memory_id": "mem_162cf5eff4f64351855546f3791c4e0a",
+        "content": "The human is working on a project that is difficult to implement and is starting with the second one.",
+        "type": "project",
+        "importance": 0.7,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T14:02:29.023590+00:00"
+        },
+        "created_at": "2026-10-08T14:02:29.051452+00:00",
+        "updated_at": null,
+        "access_count": 12,
+        "last_accessed_at": "2026-10-11T10:34:56.011953+00:00",
+        "vector_id": 9
+    },
+    {
+        "memory_id": "mem_2d2102d419fc42048964dcfd4e347a85",
+        "content": "Human mentions carrying gold on a journey",
+        "type": "routine",
+        "importance": 0.6,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T14:04:42.651240+00:00"
+        },
+        "created_at": "2026-10-08T14:04:42.744406+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 10
+    },
+    {
+        "memory_id": "mem_e39878349afc4aeab8244225b94f2e37",
+        "content": "Human expressed a desire to let things be better.",
+        "type": "goal",
+        "importance": 0.6,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T14:06:12.054594+00:00"
+        },
+        "created_at": "2026-10-08T14:06:12.073003+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 11
+    },
+    {
+        "memory_id": "mem_813139b738c44017b3c6aca37fd7f9e0",
+        "content": "Human is in Thailand",
+        "type": "important_context",
+        "importance": 0.7,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-08T14:06:44.318383+00:00"
+        },
+        "created_at": "2026-10-08T14:06:44.331282+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 12
+    },
+    {
+        "memory_id": "mem_0388e008e1c140be8437a41290ebc926",
+        "content": "Human is working on an assistant",
+        "type": "project",
+        "importance": 0.6,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-09T13:20:05.787441+00:00"
+        },
+        "created_at": "2026-10-09T13:20:05.806128+00:00",
+        "updated_at": null,
+        "access_count": 0,
+        "last_accessed_at": null,
+        "vector_id": 13
+    },
+    {
+        "memory_id": "mem_0290440fd89740bc9321a31b921ca862",
+        "content": "HUMAN is building a project called Form2Feature for farmers to help them turn simple forms into actionable features. HUMAN is building a project called Form2Feature for farmers.",
+        "type": "project",
+        "importance": 0.9,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-11T09:19:08.956489+00:00"
+        },
+        "created_at": "2026-10-11T09:19:08.982417+00:00",
+        "updated_at": "2026-10-11T09:20:33.579338+00:00",
+        "access_count": 12,
+        "last_accessed_at": "2026-10-11T10:31:40.559788+00:00",
+        "vector_id": 14
+    },
+    {
+        "memory_id": "mem_56e69c913f514d17a6e58268ab38957b",
+        "content": "Project name is Form2Feature",
+        "type": "project",
+        "importance": 0.9,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-11T09:19:14.595456+00:00"
+        },
+        "created_at": "2026-10-11T09:19:14.618214+00:00",
+        "updated_at": null,
+        "access_count": 7,
+        "last_accessed_at": "2026-10-11T10:31:40.559788+00:00",
+        "vector_id": 15
+    },
+    {
+        "memory_id": "mem_487a07910ca3428f951dbb30565aaace",
+        "content": "Human's name is Alex",
+        "type": "personal_context",
+        "importance": 0.9,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-11T09:50:08.916611+00:00"
+        },
+        "created_at": "2026-10-11T09:50:08.971370+00:00",
+        "updated_at": null,
+        "access_count": 10,
+        "last_accessed_at": "2026-10-11T10:04:57.003875+00:00",
+        "vector_id": 16
+    },
+    {
+        "memory_id": "mem_56bf8005b1dd4e41a0823779746160c9",
+        "content": "Alex",
+        "type": "personal_context",
+        "importance": 0.9,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-11T09:50:12.157879+00:00"
+        },
+        "created_at": "2026-10-11T09:50:12.184060+00:00",
+        "updated_at": null,
+        "access_count": 8,
+        "last_accessed_at": "2026-10-11T10:05:01.078539+00:00",
+        "vector_id": 17
+    },
+    {
+        "memory_id": "mem_912d325a967d444da3b5ed8eadd0e453",
+        "content": "The human's project is called CampusVoice. HUMAN's project is CampusVoice, a college communication platform.",
+        "type": "project",
+        "importance": 0.9,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-11T10:31:42.815296+00:00"
+        },
+        "created_at": "2026-10-11T10:31:42.842930+00:00",
+        "updated_at": "2026-10-11T10:35:01.131904+00:00",
+        "access_count": 3,
+        "last_accessed_at": "2026-10-11T10:35:01.128544+00:00",
+        "vector_id": 18
+    },
+    {
+        "memory_id": "mem_4b75ce73ed9848b9913876da856f4638",
+        "content": "Project name is CampusVoice",
+        "type": "project",
+        "importance": 0.9,
+        "metadata": {
+            "source": "ai_memory_extraction",
+            "created_at": "2026-10-11T10:31:47.059666+00:00"
+        },
+        "created_at": "2026-10-11T10:31:47.075556+00:00",
+        "updated_at": null,
+        "access_count": 2,
+        "last_accessed_at": "2026-10-11T10:34:56.011953+00:00",
+        "vector_id": 19
+    }
+]

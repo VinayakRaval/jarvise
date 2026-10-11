@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>JARVIS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #10243a 0%,
+                    #050a10 45%,
+                    #020406 100%
+                );
+
+            color: #e8faff;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            overflow: hidden;
+        }
+
+
+        /* ==================================================
+           MAIN CONTAINER
+           ================================================== */
+
+        .jarvis-container {
+
+            width: 100%;
+            height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+
+            position: relative;
+        }
+
+
+        /* ==================================================
+           HEADER
+           ================================================== */
+
+        .header {
+
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            border-bottom:
+                1px solid rgba(0, 200, 255, 0.15);
+
+            background:
+                rgba(2, 8, 14, 0.65);
+
+            backdrop-filter: blur(10px);
+        }
+
+
+        .logo {
+
+            font-size: 24px;
+
+            letter-spacing: 8px;
+
+            font-weight: 600;
+
+            color: #7eeaff;
+        }
+
+
+        .status {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 13px;
+
+            color: #9bb8c5;
+        }
+
+
+        .status-dot {
+
+            width: 9px;
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #35e6a5;
+
+            box-shadow:
+                0 0 10px #35e6a5;
+        }
+
+
+        /* ==================================================
+           MAIN AREA
+           ================================================== */
+
+        .main {
+
+            flex: 1;
+
+            display: flex;
+
+            overflow: hidden;
+        }
+
+
+        /* ==================================================
+           JARVIS CORE
+           ================================================== */
+
+        .core-panel {
+
+            width: 42%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+        }
+
+
+        .core {
+
+            width: 240px;
+            height: 240px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid rgba(80, 220, 255, 0.5);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            box-shadow:
+
+                0 0 30px rgba(0, 200, 255, 0.15),
+
+                0 0 80px rgba(0, 150, 255, 0.1);
+
+            animation:
+                corePulse 4s ease-in-out infinite;
+        }
+
+
+        .core::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 185px;
+            height: 185px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid rgba(0, 220, 255, 0.5);
+
+            animation:
+                rotate 12s linear infinite;
+        }
+
+
+        .core::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 125px;
+            height: 125px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #b8f8ff 0%,
+                    #3adfff 25%,
+                    #0077a8 55%,
+                    transparent 72%
+                );
+
+            box-shadow:
+                0 0 40px #00d9ff,
+                0 0 90px rgba(0, 210, 255, 0.5);
+        }
+
+
+        .core-label {
+
+            position: absolute;
+
+            bottom: -50px;
+
+            letter-spacing: 5px;
+
+            font-size: 12px;
+
+            color: #6e9aa9;
+        }
+
+
+        /* ==================================================
+           CONVERSATION
+           ================================================== */
+
+        .conversation-panel {
+
+            width: 58%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            padding: 30px;
+
+            background:
+                rgba(3, 10, 17, 0.35);
+
+            border-left:
+                1px solid rgba(0, 200, 255, 0.1);
+        }
+
+
+        .conversation {
+
+            flex: 1;
+
+            overflow-y: auto;
+
+            padding-right: 10px;
+        }
+
+
+        .welcome {
+
+            color: #7fa8b7;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            margin-bottom: 25px;
+        }
+
+
+        .message {
+
+            margin-bottom: 20px;
+
+            line-height: 1.6;
+
+            max-width: 80%;
+        }
+
+
+        .message-label {
+
+            font-size: 11px;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 5px;
+
+            color: #628b9b;
+        }
+
+
+        .message-text {
+
+            font-size: 15px;
+        }
+
+
+        .user {
+
+            margin-left: auto;
+
+            text-align: right;
+        }
+
+
+        .user .message-text {
+
+            color: #bcefff;
+        }
+
+
+        .jarvis .message-text {
+
+            color: #72e6ff;
+        }
+
+
+        /* ==================================================
+           INPUT
+           ================================================== */
+
+        .input-area {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 20px;
+        }
+
+
+        #message {
+
+            flex: 1;
+
+            padding: 16px 18px;
+
+            border-radius: 8px;
+
+            border:
+                1px solid rgba(0, 200, 255, 0.2);
+
+            outline: none;
+
+            background:
+                rgba(4, 13, 21, 0.85);
+
+            color: white;
+
+            font-size: 14px;
+        }
+
+
+        #message:focus {
+
+            border-color:
+                rgba(0, 220, 255, 0.55);
+
+            box-shadow:
+                0 0 15px rgba(0, 200, 255, 0.08);
+        }
+
+
+        #send {
+
+            width: 100px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #0c7f9e;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+
+        #send:hover {
+
+            background: #0ca9d0;
+
+            box-shadow:
+                0 0 20px rgba(0, 210, 255, 0.25);
+        }
+
+
+        #send:disabled {
+
+            opacity: 0.5;
+
+            cursor: not-allowed;
+        }
+
+
+        /* ==================================================
+           ANIMATIONS
+           ================================================== */
+
+        @keyframes rotate {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        @keyframes corePulse {
+
+            0%,
+            100% {
+
+                transform: scale(1);
+
+            }
+
+            50% {
+
+                transform: scale(1.03);
+
+            }
+        }
+
+
+        /* ==================================================
+           SCROLLBAR
+           ================================================== */
+
+        .conversation::-webkit-scrollbar {
+
+            width: 5px;
+        }
+
+
+        .conversation::-webkit-scrollbar-thumb {
+
+            background: #16495b;
+
+            border-radius: 10px;
+        }
+
+
+        /* ==================================================
+           MOBILE
+           ================================================== */
+
+        @media (max-width: 800px) {
+
+            .main {
+
+                flex-direction: column;
+
+                overflow-y: auto;
+            }
+
+            .core-panel {
+
+                width: 100%;
+
+                height: 330px;
+            }
+
+            .conversation-panel {
+
+                width: 100%;
+
+                height: calc(100vh - 330px);
+
+                border-left: none;
+            }
+
+            .core {
+
+                width: 180px;
+                height: 180px;
+            }
+
+            .core::before {
+
+                width: 140px;
+                height: 140px;
+            }
+
+            .core::after {
+
+                width: 95px;
+                height: 95px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="jarvis-container">
+
+
+    <!-- ================================================
+         HEADER
+         ================================================ -->
+
+    <header class="header">
+
+        <div class="logo">
+            JARVIS
+        </div>
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            <span id="statusText">
+                ONLINE
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================
+         MAIN
+         ================================================ -->
+
+    <main class="main">
+
+
+        <!-- ============================================
+             CORE
+             ============================================ -->
+
+        <section class="core-panel">
+
+            <div class="core"></div>
+
+            <div class="core-label">
+                AI CORE
+            </div>
+
+        </section>
+
+
+        <!-- ============================================
+             CONVERSATION
+             ============================================ -->
+
+        <section class="conversation-panel">
+
+            <div
+                id="conversation"
+                class="conversation"
+            >
+
+                <div class="welcome">
+
+                    JARVIS is ready.
+
+                    <br><br>
+
+                    This interface will eventually become
+                    the communication layer between you
+                    and the JARVIS intelligence system.
+
+                </div>
+
+            </div>
+
+
+            <div class="input-area">
+
+                <input
+                    id="message"
+                    type="text"
+                    placeholder="Speak with JARVIS..."
+                    autocomplete="off"
+                >
+
+                <button id="send">
+                    Send
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const API_URL =
+    "http://127.0.0.1:8000";
+
+
+const messageInput =
+    document.getElementById("message");
+
+
+const sendButton =
+    document.getElementById("send");
+
+
+const conversation =
+    document.getElementById("conversation");
+
+
+const statusText =
+    document.getElementById("statusText");
+
+
+
+/* ======================================================
+   ESCAPE HTML
+   ====================================================== */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+
+
+/* ======================================================
+   ADD MESSAGE
+   ====================================================== */
+
+function addMessage(
+    role,
+    text
+) {
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        `message ${role}`;
+
+
+    const label =
+        role === "user"
+            ? "YOU"
+            : "JARVIS";
+
+
+    message.innerHTML = `
+
+        <div class="message-label">
+            ${label}
+        </div>
+
+        <div class="message-text">
+            ${escapeHtml(text)}
+        </div>
+
+    `;
+
+
+    conversation.appendChild(message);
+
+
+    conversation.scrollTop =
+        conversation.scrollHeight;
+}
+
+
+
+/* ======================================================
+   SEND MESSAGE
+   ====================================================== */
+
+async function sendMessage() {
+
+    const message =
+        messageInput.value.trim();
+
+
+    if (!message) {
+        return;
+    }
+
+
+    addMessage(
+        "user",
+        message
+    );
+
+
+    messageInput.value = "";
+
+    sendButton.disabled = true;
+
+    statusText.textContent =
+        "THINKING";
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/conversation`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        message: message
+                    })
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Server error: ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success === false) {
+
+            addMessage(
+                "jarvis",
+                data.message ||
+                "I wasn't able to process that."
+            );
+
+        } else {
+
+            addMessage(
+                "jarvis",
+                data.response ||
+                data.message ||
+                "I understand."
+            );
+
+        }
+
+
+        statusText.textContent =
+            "ONLINE";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        addMessage(
+            "jarvis",
+            "I'm unable to connect to my core right now."
+        );
+
+
+        statusText.textContent =
+            "OFFLINE";
+
+    }
+
+
+    sendButton.disabled = false;
+
+    messageInput.focus();
+}
+
+
+
+/* ======================================================
+   BUTTON
+   ====================================================== */
+
+sendButton.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+
+/* ======================================================
+   ENTER KEY
+   ====================================================== */
+
+messageInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+
+/* ======================================================
+   INITIAL HEALTH CHECK
+   ====================================================== */
+
+async function checkBackend() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/health`
+            );
+
+
+        if (response.ok) {
+
+            statusText.textContent =
+                "ONLINE";
+
+        } else {
+
+            statusText.textContent =
+                "OFFLINE";
+
+        }
+
+    } catch {
+
+        statusText.textContent =
+            "OFFLINE";
+
+    }
+
+}
+
+
+checkBackend();
+
+</script>
+
+</body>
+
+</html>

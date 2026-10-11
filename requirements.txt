@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+openai
+pydantic
+requests
+sentence-transformers 
+faiss-cpu 
+numpy
+ faster-whisper
+  webrtcvad-wheels
+   sounddevice 
+numpy
